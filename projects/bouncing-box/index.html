@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Bouncing Box</title>
+	<script src="jquery.min.js"></script>
+
+<!-- 	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> -->
+
+	<!-- BEGIN CSS -->
+	<style>
+		/* TODO 1 */
+		[class="box"] {
+			display: block;
+			position: absolute;
+			width: 70px;
+			height: 70px;
+			top: 100px;
+			left: 0px;
+			background-color: red;
+			font-size: 300%;
+			text-align: center;
+		}
+	</style>
+
+</head>
+<body class="board">
+	<!-- HTML for the box -->
+	<div class="box">?</div>
+
+	<!-- BEGIN JAVASCRIPT -->
+	<script>
+		(function(){
+			'use strict'
+			/* global &*/
+
+			// Variable declarations
+			var box;
+			var boardWidth;
+			var update;
+			var handleBoxClick;
+			var direction;
+			direction = 1;
+			
+
+			// jQuery stuff setup for you
+			box = $('.box');
+			boardWidth = $('.board').width();
+
+			// TODO 2
+			var position;
+			var points;
+			var speed;
+			
+			position = 0;
+			points = 0;
+			speed = 10;
+		
+			box.css('left', position);
+		
+			/** 
+			Comment from ben:
+			
+			This is a good start Sarah! Let's go over a few things to get this working just right.
+			
+			1) What does position = position + (speed * direction) actually do?
+			The position variable determines where we move the box to. Let's suppose that 
+			position = 500. When we use the function "box.css('left', position)" we are
+			setting the box's x-coordinate to 500. If we increase the value of position, then 
+			the box moves the right. Decreasing it moves it to the left. This is why we var direction. 
+			By setting direction to 1 or -1 we can control whether or not position gets 
+			bigger (moves to the right) or smaller (moves to the left):
+			
+				direction = 1							direction = - 1
+				position = position + speed		vs. 	position = position - speed
+				
+			2) Now we have to decide WHEN - that's where the if statement comes in. If the position
+			ever gets to the point that it has hit the right wall then we want to move it back to the
+			left (i.e. set direction to -1). We can tell that this happens by checking to see if 
+			position is greater than boardWidth (which you've done!). However, we don't want to reset
+			the position back to 0 or else we will just be moving the box ALL the way to the left.
+			
+			3) Now all that is left is to determine when to move the box to the right. Knowing
+			that the x-coordinate of the LEFT wall is x = 0, how can you create an if statement
+			that makes the box bounce to the right when it hits this wall?
+			*/
+			update = function() {
+				// TODO 3 / 6 / 7 / 8
+				position = position + (speed * direction);
+				if(position > boardWidth){
+					direction = -1;
+					// position = 0; we don't want to do this!
+				}
+				box.css('left', position);
+				box.text(points);
+				position = position + speed; // this is also extra at this point since we are already deciding how to change position above
+			};
+
+
+			/** Comment from Ben: Great work here! */
+			handleBoxClick = function() {
+				// TODO 4 / 5
+				speed = speed + 3;
+				position = 0;
+				points = points + 1
+				
+			};
+
+
+			//this calls update every 50 milliseconds
+			setInterval(update, 50);
+			// this calls the handle handleBoxClick function every time the box is clicked on
+			box.on('click', handleBoxClick);
+		})();
+	</script>
+</body>
+</html>
